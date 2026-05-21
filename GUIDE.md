@@ -102,8 +102,8 @@ Imagine a bucket that holds tokens. It starts full. Every request costs 1 token.
 - Guarantee: no tier ever gets zero allocation while capacity remains (starvation prevention)
 
 **The algorithm (weighted fair queuing, simplified):**
-1. Calculate total demand across all active tiers
-2. If total demand <= total capacity: everyone gets what they want, done
+1. Calculate total demand across all active tiers (Did this)
+2. If total demand <= total capacity: everyone gets what they want, done (Did this)
 3. If total demand > total capacity: each tier gets `(tier_weight / total_weight) * total_capacity`
 4. Floor: minimum allocation = 1 req/s regardless of weight (starvation prevention)
 

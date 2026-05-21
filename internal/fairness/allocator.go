@@ -11,6 +11,7 @@ type Allocator struct {
 
 // Allocate returns tierBaseRate and tierCapacity
 func (a *Allocator) Allocate(tierName string) (float64, float64, error) {
+
 	tier, exists := a.tiers[tierName]
 	if !exists {
 		return 0, 0, fmt.Errorf("tier not found %s", tierName)
@@ -26,7 +27,18 @@ func (a *Allocator) Allocate(tierName string) (float64, float64, error) {
 		totalDemand += tier.baseRate
 	}
 
-	return tier.baseRate, tier.capacity, nil
+	if totalDemand <= a.maxCapacity {
+		return tier.baseRate, tier.capacity, nil
+	}
+
+	demandTierRate := (float64(tier.weight) / float64(totalWeight)) * a.maxCapacity
+
+	canGuaranteeMinimum := a.maxCapacity >= float64(len(a.tiers))
+	if canGuaranteeMinimum && demandTierRate < 1 {
+		return 1, tier.capacity, nil
+	}
+
+	return demandTierRate, tier.capacity, nil
 }
 
 func NewAllocator(maxCapacity float64, tiers map[string]Tier) (*Allocator, error) {

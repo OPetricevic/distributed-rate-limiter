@@ -17,6 +17,7 @@ func NewRegistry() *Registry {
 	}
 }
 
+// GetOrCreate fetches a bucket in the registry, if not found it creates a bucket in the registry and returns it.
 func (r *Registry) GetOrCreate(bucketKey string, capacity, refillRate float64) (*bucket.Bucket, error) {
 	r.mu.RLock()
 	b, exists := r.buckets[bucketKey]

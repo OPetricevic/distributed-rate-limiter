@@ -13,7 +13,7 @@ type Server struct {
 }
 
 func (s *Server) CheckHandler(w http.ResponseWriter, r *http.Request) {
-	key := r.Header.Get("X-API-Key")
+	userKey := r.Header.Get("X-API-Key")
 	tierName := r.Header.Get("X-Tier")
 
 	baseTierRate, baseCapacity, err := s.allocator.Allocate(tierName)
@@ -22,7 +22,7 @@ func (s *Server) CheckHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bucket, err := s.registry.GetOrCreate(key, baseCapacity, baseTierRate)
+	bucket, err := s.registry.GetOrCreate(userKey, baseCapacity, baseTierRate)
 	if err != nil {
 		http.Error(w, "CheckHandler failed at fetching or creating bucket", http.StatusInternalServerError)
 		return

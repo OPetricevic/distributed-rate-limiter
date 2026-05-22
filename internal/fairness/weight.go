@@ -1,8 +1,5 @@
 package fairness
 
-//Each tier = base rate
-//Nobody can hit 0,
-
 type Tier struct {
 	name     string
 	capacity float64

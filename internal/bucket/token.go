@@ -14,6 +14,7 @@ type Bucket struct {
 	mu         sync.Mutex
 }
 
+// NewBucket takes capacity and refil rate, and creates a new bucket
 func NewBucket(capacity, refillRate float64) (*Bucket, error) {
 	if capacity <= 0 || refillRate <= 0 {
 		return nil, fmt.Errorf("capacity must be positive, got: %f", capacity)
@@ -27,6 +28,7 @@ func NewBucket(capacity, refillRate float64) (*Bucket, error) {
 	}, nil
 }
 
+// Allow returns a boolean, after it checks if a requester is able to ping
 func (b *Bucket) Allow(cost int) bool {
 	b.mu.Lock()
 	defer b.mu.Unlock()
@@ -42,6 +44,7 @@ func (b *Bucket) Allow(cost int) bool {
 	return false
 }
 
+// Tokens returns the tokenCount from a bucket
 func (b *Bucket) Tokens() float64 {
 	b.mu.Lock()
 	defer b.mu.Unlock()
@@ -51,6 +54,7 @@ func (b *Bucket) Tokens() float64 {
 	return b.tokenCount
 }
 
+// refill fills the bucket token count based on elapsed time
 func (b *Bucket) refill() {
 	elapsed := time.Since(b.lastRefill).Seconds()
 	b.tokenCount += elapsed * b.refillRate

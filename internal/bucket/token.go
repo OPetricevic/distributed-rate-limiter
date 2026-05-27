@@ -54,6 +54,10 @@ func (b *Bucket) Tokens() float64 {
 	return b.tokenCount
 }
 
+func (b *Bucket) Capacity() float64 {
+	return b.capacity
+}
+
 // refill fills the bucket token count based on elapsed time
 func (b *Bucket) refill() {
 	elapsed := time.Since(b.lastRefill).Seconds()
@@ -63,4 +67,11 @@ func (b *Bucket) refill() {
 	}
 
 	b.lastRefill = time.Now()
+}
+
+func (b *Bucket) SetTokens(amount float64) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	b.tokenCount = amount
+
 }

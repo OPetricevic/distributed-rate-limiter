@@ -42,3 +42,14 @@ func (r *Registry) GetOrCreate(bucketKey string, capacity, refillRate float64) (
 
 	return newBucket, nil
 }
+
+func (r *Registry) Get(key string) *bucket.Bucket {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	b, exists := r.buckets[key]
+
+	if exists {
+		return b
+	}
+	return nil
+}

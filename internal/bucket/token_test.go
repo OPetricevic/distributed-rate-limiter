@@ -14,7 +14,7 @@ func TestNewBucket(t *testing.T) {
 	}{
 		{name: "valid input", capacity: 100, refillRate: 10, wantErr: false},
 		{name: "zero capacity", capacity: 0, refillRate: 10, wantErr: true},
-		{name: "zero refill rate", capacity: 100, refillRate: 0, wantErr: true},
+		{name: "zero ", capacity: 100, refillRate: 0, wantErr: true},
 		{name: "negative capacity", capacity: -5, refillRate: 0, wantErr: true},
 	}
 
